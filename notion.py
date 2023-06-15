@@ -1,13 +1,15 @@
 import os
 from dotenv import load_dotenv
 import requests
-from datetime import date
+import datetime
 from operator import itemgetter
 import html
+import pytz
 
 load_dotenv()
 NOTION_TOKEN = os.environ.get('NOTION_TOKEN')
-today = date.today()
+timezone = pytz.timezone('Singapore')
+today = datetime.datetime.now(timezone).date()
 headers = {
     "Authorization": "Bearer " + NOTION_TOKEN,
     "Content-Type": "application/json",
@@ -42,7 +44,7 @@ def get_activities(NOTION_DATABASE_ID):
         return activities
     for result in data["results"]:
         event_name, event_date, event_time, event_tags, event_url = parse_notion_object(result)
-        if event_date == "2023-06-16":
+        if event_date == today:
             activity = {
                 'Name': event_name,
                 'Time': event_time,
