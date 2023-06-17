@@ -41,7 +41,7 @@ def get_activities(NOTION_DATABASE_ID):
     response = requests.post(url, json=payload, headers=headers)
     data = response.json()
     if data['object'] == 'error':
-        return activities
+        return 'error'
     for result in data["results"]:
         event_name, event_date, event_time, event_tags, event_url = parse_notion_object(result)
         if event_date == today:
@@ -75,10 +75,12 @@ def craft_msg(activities):
     return final_msg
 
 
-def connectToNotion(curr_date):
-    activities = get_activities(curr_date)
-    if activities:
+def connectToNotion(database_id):
+    activities = get_activities(database_id)
+    if activities == 'error':
+        return 'error'
+    elif activities:
         activities = sort_activities(activities)
     else:
-        return ""
+        return ''
     return craft_msg(activities)

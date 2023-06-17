@@ -48,13 +48,21 @@ def notion_connect(update, context):
         text=f"Thank you. Allow me to retrieve your database."
     )
     activities = notion.connectToNotion(databaseID)
-    if activities == "":
+    if activities == "error":
         context.bot.send_message(
             chat_id=update.effective_chat.id,
-            text="The Database ID you provided could not be found. Have you configured your database with us?"
+            text="The Database ID you provided could not be found. Have you configured your database with us? "
                  "If yes, try again. "
         )
         return CONNECT
+    elif activities == "":
+        context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=f"Seems like you are all clear for the day! Weee!",
+            parse_mode=ParseMode.HTML
+        )
+        # end of conversation
+        return ConversationHandler.END
     else:
         context.bot.send_message(
             chat_id=update.effective_chat.id,
