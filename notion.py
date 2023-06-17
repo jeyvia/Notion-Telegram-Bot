@@ -10,6 +10,7 @@ load_dotenv()
 NOTION_TOKEN = os.environ.get('NOTION_TOKEN')
 timezone = pytz.timezone('Singapore')
 today = datetime.datetime.now(timezone).date()
+today = today.strftime("%Y-%m-%d")
 headers = {
     "Authorization": "Bearer " + NOTION_TOKEN,
     "Content-Type": "application/json",
